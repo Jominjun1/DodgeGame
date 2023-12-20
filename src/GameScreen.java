@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,14 +14,11 @@ public class GameScreen extends JFrame {
     private GameLogic gameLogic;
     private List<Item> items;
     private boolean initialBulletsGenerated = false;
-
-    public GameScreen() {
+    public GameScreen(JFrame frame, PrintWriter out) {
         super("총알 피하기 게임");
-
         timer = new Timer(16, new ActionListener() {
             private long lastBulletIncreaseTime = System.currentTimeMillis();
-            private int bulletIncreaseInterval = 3000; // 3000 milliseconds (3 seconds)
-
+            private int bulletIncreaseInterval = 3000; // 3000밀리초(3초)
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (!gameLogic.isGameOver()) {
@@ -49,47 +47,40 @@ public class GameScreen extends JFrame {
                 }
             }
         });
-
         timer.start();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1080, 800);
         player = new Player(getWidth() / 2, getHeight() / 2 - 200);
         bulletManager = new BulletManager();
-        gameLogic = new GameLogic(player, bulletManager, this);
+        gameLogic = new GameLogic(player, bulletManager, this, frame, out);
         items = new ArrayList<>(); // 아이템 리스트 초기화
         setResizable(false);
         setLocationRelativeTo(null);
         setVisible(true);
     }
-
     private void generateBulletInitial() {
         bulletManager.generateInitialBullets();
     }
-
     private void updateBullets() {
         bulletManager.updateBullets();
     }
-
     // 아이템 생성 로직
     private void generateItem() {
-        if (getElapsedTime() % 300 == 0) {
+        if (getElapsedTime() % 250 == 0) {
             int itemSize = 20;
             int x = (int) (Math.random() * (getWidth() - itemSize));
             int y = (int) (Math.random() * (getHeight() - itemSize));
             Image itemImage = ItemLoader.getRandomItemImage();
             Item.ItemType itemType = getRandomItemType();
-
             Item item = new Item(itemImage, x, y, itemSize, itemType, true, true);
             items.add(item);
         }
     }
-
     private Item.ItemType getRandomItemType() {
         Item.ItemType[] itemTypes = Item.ItemType.values();
         int randomIndex = (int) (Math.random() * itemTypes.length);
         return itemTypes[randomIndex];
     }
-
     @Override
     public void paint(Graphics g) {
         Image offScreenImage = createImage(getWidth(), getHeight());
@@ -104,19 +95,16 @@ public class GameScreen extends JFrame {
             bullet.draw(offScreenGraphics);
         }
 
-        // Draw items only if they are not removed
+
+        // 항목이 제거되지 않은 경우에만 항목을 그립니다.
         for (Item item : items) {
-            if (!item.isRemoved()) {
-                item.draw(offScreenGraphics);
-            }
+            if (!item.isRemoved()) { item.draw(offScreenGraphics); }
         }
         g.drawImage(offScreenImage, 0, 0, this);
     }
-
     public int getElapsedTime() {
         return elapsedTime;
     }
-
     public Timer getTimer() {
         return timer;
     }

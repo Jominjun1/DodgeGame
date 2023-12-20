@@ -6,7 +6,6 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
 public class GameController {
     private Player player;
     private GameScreen gameScreen;
@@ -14,12 +13,10 @@ public class GameController {
     private BufferedImage offScreenImage;
     private Random random;
     private List<Item> items;
-
     public GameController(GameScreen gameScreen) {
         this.gameScreen = gameScreen;
         this.player = new Player(gameScreen.getWidth(), gameScreen.getHeight());
         gameScreen.setFocusable(true);
-
         offScreenImage = new BufferedImage(gameScreen.getWidth(), gameScreen.getHeight(), BufferedImage.TYPE_INT_ARGB);
         random = new Random();
         items = new ArrayList<>();
@@ -46,12 +43,9 @@ public class GameController {
         // 플레이어 그리기
         player.draw(offScreenGraphics);
         // 아이템 그리기
-        for (Item item : items) {
-            item.draw(offScreenGraphics);
-        }
+        for (Item item : items) { item.draw(offScreenGraphics); }
         offScreenGraphics.dispose();
     }
-
     public Player getPlayer() {
         return player;
     }

@@ -1,17 +1,15 @@
 import java.awt.*;
 public class Bullet {
     private int x, y;
-    private double speed; // Change to double to allow for fractional speed changes
-    private double originalSpeed; // Store the original speed
+    private double speed;
+    private double originalSpeed;
     public static final int BULLET_SIZE = 5;
     private double angle;
-
-    // Constructor
     public Bullet(int x, int y, double angle) {
         this.x = x;
         this.y = y;
-        this.speed = 5.0; // Initial speed
-        this.originalSpeed = 5.0; // Store the original speed
+        this.speed = 5.0;
+        this.originalSpeed = 5.0;
         this.angle = angle;
     }
     public void update() {
@@ -31,20 +29,16 @@ public class Bullet {
         g.fillOval(x, y, BULLET_SIZE, BULLET_SIZE);
     }
     public void decreaseSpeed(double factor, int duration) {
-        // Decrease the speed by the specified factor
+        // 지정된 인수만큼 속도를 줄입니다.
         speed *= factor;
-
-        // Schedule the speed to be reset after the specified duration
+        // 지정된 기간 후에 속도가 재설정되도록 예약합니다.
         new java.util.Timer().schedule(
                 new java.util.TimerTask() {
                     @Override
-                    public void run() {
-                        // Reset the speed to its original value after the duration
+                    public void run() { // 지속 시간이 지나면 속도를 원래 값으로 재설정합니다.
                         speed = originalSpeed;
                     }
-                },
-                duration
-        );
+                }, duration );
     }
     public Rectangle getBounds() { return new Rectangle(x, y, BULLET_SIZE, BULLET_SIZE); }
     public int getX() { return x; }
