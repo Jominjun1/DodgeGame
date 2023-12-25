@@ -11,3 +11,7 @@
 아이템이 5초마다 랜덤으로 생성, 아이템은 총 6가지의 동일한 확률의 랜덤 효과를 플레이어에게 부여. (item.java , itemLoader.java , GameScreen)
 
 게임 종료시 타이머를 통한 본인의 생존 시간을 메인화면으로 돌아가서 표시, 2인 이상일 경우 높은 생존 시간을 가진 플레이어가 승리했다고 표시. ( GameLogic.java )
+![StartMenu](https://github.com/Jominjun1/DodgeGame/assets/116476333/40a65667-a2cf-4708-a1bf-c91df9ac8d5c)
+
+
+![GameInfo](https://github.com/Jominjun1/DodgeGame/assets/116476333/3d2db6d4-49d9-4caf-a7f0-d805b5f414e8)
